@@ -50,6 +50,7 @@ function InitializeComponent {
     $Members_Listview.Size = (New-Object -TypeName System.Drawing.Size -ArgumentList @([System.Int32]1006, [System.Int32]667))
     $Members_Listview.TabIndex = [System.Int32]1
     $Members_Listview.UseCompatibleStateImageBehavior = $false
+    $Members_Listview.GridLines = $true
     $Members_Listview.View = [System.Windows.Forms.View]::Details
     #
     #Gatorlink
@@ -134,7 +135,7 @@ function InitializeComponent {
     #group_Label
     #
     $group_Label.Font = (New-Object -TypeName System.Drawing.Font -ArgumentList @([System.String]'Tahoma', [System.Single]12))
-    $group_Label.Location = (New-Object -TypeName System.Drawing.Point -ArgumentList @([System.Int32]257, [System.Int32]19))
+    $group_Label.Location = (New-Object -TypeName System.Drawing.Point -ArgumentList @([System.Int32]321, [System.Int32]19))
     $group_Label.Name = [System.String]'group_Label'
     $group_Label.Size = (New-Object -TypeName System.Drawing.Size -ArgumentList @([System.Int32]455, [System.Int32]30))
     $group_Label.TabIndex = [System.Int32]8
