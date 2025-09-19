@@ -190,25 +190,8 @@ $Groups_Listbox_Click = {
     $group_Label.Text = $Groups_Listbox.SelectedItem
     #clear members list before recreating it
     $Members_Listview.Items.Clear()
-    #call function from ad.ps1 to get group members
-    $Members = getgroupmembers($Groups_Listbox.SelectedItem)
-    #iterate and populate members of selected group into Members_Listview
-    foreach ($member in $Members) {
-        #only add users, not groups
-        if ( $member.objectclass -eq "user" ) {
-            $temp = Get-ADUser -Identity $Member -Properties GivenName, Surname, UserPrincipalName | Select-Object Name, GivenName, Surname, UserPrincipalName, ObjectClass
-            $x = New-Object System.Windows.Forms.ListViewItem($temp.Name)
-            $x.Subitems.Add($temp.SurName)
-            $x.Subitems.Add($temp.GivenName)
-            $x.Subitems.Add($temp.UserPrincipalName)
-            $Members_Listview.Items.Add($x)
-        }
-        #show groups with just name so lists arent empty
-        if ( $member.objectclass -eq "group" ) {
-            $x = New-Object System.Windows.Forms.ListViewItem($member.name)
-            $Members_Listview.Items.Add($x)
-        }
-    }
+    #call function to populate members of selected group into Members_Listview
+    refreshlistview $Groups_Listbox.SelectedItem
 }
 
 #function to run when remove_Button is clicked
