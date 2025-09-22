@@ -52,6 +52,7 @@ function InitializeComponent {
     $Members_Listview.UseCompatibleStateImageBehavior = $false
     $Members_Listview.GridLines = $true
     $Members_Listview.View = [System.Windows.Forms.View]::Details
+    $Members_Listview.add_SelectedIndexChanged($Members_Listview_Click)
     #
     #Gatorlink
     #
@@ -87,7 +88,7 @@ function InitializeComponent {
     $email_TextBox.Font = (New-Object -TypeName System.Drawing.Font -ArgumentList @([System.String]'Tahoma', [System.Single]12))
     $email_TextBox.Location = (New-Object -TypeName System.Drawing.Point -ArgumentList @([System.Int32]1333, [System.Int32]79))
     $email_TextBox.Name = [System.String]'email_TextBox'
-    $email_TextBox.Size = (New-Object -TypeName System.Drawing.Size -ArgumentList @([System.Int32]247, [System.Int32]27))
+    $email_TextBox.Size = (New-Object -TypeName System.Drawing.Size -ArgumentList @([System.Int32]400, [System.Int32]27))
     $email_TextBox.TabIndex = [System.Int32]3
     #
     #search_Button
@@ -107,7 +108,7 @@ function InitializeComponent {
     $results_Textbox.Location = (New-Object -TypeName System.Drawing.Point -ArgumentList @([System.Int32]1333, [System.Int32]142))
     $results_Textbox.Multiline = $true
     $results_Textbox.Name = [System.String]'results_Textbox'
-    $results_Textbox.Size = (New-Object -TypeName System.Drawing.Size -ArgumentList @([System.Int32]250, [System.Int32]192))
+    $results_Textbox.Size = (New-Object -TypeName System.Drawing.Size -ArgumentList @([System.Int32]400, [System.Int32]192))
     $results_Textbox.TabIndex = [System.Int32]5
     #
     #add_Button
@@ -143,7 +144,7 @@ function InitializeComponent {
     #
     #Form1
     #
-    $Form1.ClientSize = (New-Object -TypeName System.Drawing.Size -ArgumentList @([System.Int32]1599, [System.Int32]778))
+    $Form1.ClientSize = (New-Object -TypeName System.Drawing.Size -ArgumentList @([System.Int32]1800, [System.Int32]800))
     $Form1.Controls.Add($group_Label)
     $Form1.Controls.Add($remove_Button)
     $Form1.Controls.Add($add_Button)
@@ -195,6 +196,13 @@ $Groups_Listbox_Click = {
     refreshlistview $Groups_Listbox.SelectedItem
 }
 
+#function to run when members_listview is clicked. it will populate the email_Textbox with the selected member and run a search on it
+$Members_Listview_Click = {
+    $selected_member = $Members_Listview.SelectedItems.text
+    $email_Textbox.Text = $selected_member
+    &$searchButton_Click
+}
+
 #function to run when remove_Button is clicked
 $remove_Button_Click = {
     $x = $Groups_ListBox.SelectedItem
@@ -211,21 +219,28 @@ $remove_Button_Click = {
 $searchButton_Click = {
     $email = $email_Textbox.Text
     $results_Textbox.Text = ""
-
+    # Validate email input
     if ([string]::IsNullOrWhiteSpace($email)) {
         $results_Textbox.Text = "Please enter a valid email address."
         return
     }
 
+    # Append domain if missing
+    if (-not $email.Contains("@")) {
+        $email = "$email@ufl.edu"
+        $email_Textbox.Text = $email
+    }
+
+    # Search Active Directory for user with the provided email
     try {
-        $user = Get-ADUser -Filter "Mail -eq '$email'" -Properties DisplayName, SamAccountName, Mail, Description, Enabled
+        $user = Get-ADUser -Filter "Mail -eq '$email'" -Properties DisplayName, SamAccountName, Mail, Title, EmployeeID
 
         if ($user) {
             $results_Textbox.Text = "Display Name: $($user.DisplayName)`r`n" +
             "Username: $($user.SamAccountName)`r`n" +
             "Email: $($user.Mail)`r`n" +
-            "Description: $($user.Description)`r`n" +
-            "Enabled: $($user.Enabled)"
+            "Title: $($user.Title)`r`n" +
+            "EmployeeID: $($user.EmployeeID)"
         }
         else {
             $results_Textbox.Text = "No user found with that email address."
