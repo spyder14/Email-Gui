@@ -10,7 +10,7 @@ $assemblies = @(
 # 2. Declare the C# class
 # --------------------------------------------------------------
 Add-Type -ReferencedAssemblies $assemblies `
-         -TypeDefinition @"
+    -TypeDefinition @"
 using System;
 using System.Windows.Forms;
 using System.Collections;

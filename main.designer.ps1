@@ -58,26 +58,26 @@ function InitializeComponent {
     $sorter = [ListViewColumnSorter]::new()
     $Members_Listview.ListViewItemSorter = $sorter
     $null = $Members_Listview.Add_ColumnClick({
-    param($sender, $e)
+            param($sender, $e)
 
-    # If we click the same column we flip the order
-    if ($sorter.SortColumn -eq $e.Column) {
-        if ($sorter.Order -eq [System.Windows.Forms.SortOrder]::Ascending) {
-            $sorter.Order = [System.Windows.Forms.SortOrder]::Descending
-        }
-        else {
-            $sorter.Order = [System.Windows.Forms.SortOrder]::Ascending
-        }
-    }
-    else {
-        # New column – start with ascending
-        $sorter.SortColumn = $e.Column
-        $sorter.Order = [System.Windows.Forms.SortOrder]::Ascending
-    }
+            # If we click the same column we flip the order
+            if ($sorter.SortColumn -eq $e.Column) {
+                if ($sorter.Order -eq [System.Windows.Forms.SortOrder]::Ascending) {
+                    $sorter.Order = [System.Windows.Forms.SortOrder]::Descending
+                }
+                else {
+                    $sorter.Order = [System.Windows.Forms.SortOrder]::Ascending
+                }
+            }
+            else {
+                # New column – start with ascending
+                $sorter.SortColumn = $e.Column
+                $sorter.Order = [System.Windows.Forms.SortOrder]::Ascending
+            }
 
-    # Tell the ListView to re‑sort based on the new settings
-    $Members_Listview.Sort()
-})
+            # Tell the ListView to re‑sort based on the new settings
+            $Members_Listview.Sort()
+        })
     #
     #Gatorlink
     #
