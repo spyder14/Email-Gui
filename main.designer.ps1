@@ -58,7 +58,7 @@ function InitializeComponent {
     $sorter = [ListViewColumnSorter]::new()
     $Members_Listview.ListViewItemSorter = $sorter
     $null = $Members_Listview.Add_ColumnClick({
-            param($sender, $e)
+            param($src, $e)
 
             # If we click the same column we flip the order
             if ($sorter.SortColumn -eq $e.Column) {

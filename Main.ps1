@@ -2,8 +2,9 @@ import-module ActiveDirectory
 
 #create a form using layout from design file
 Add-Type -AssemblyName System.Windows.Forms
-. (Join-Path $PSScriptRoot 'main.designer.ps1')
 . (Join-Path $PSScriptRoot 'sorting.ps1')
+. (Join-Path $PSScriptRoot 'main.designer.ps1')
+
 
 #callable function to get list of groups to populate groups_ListBox from ADUC
 function getgroups {
